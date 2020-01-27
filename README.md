@@ -98,8 +98,8 @@ Here is a summary of the results:
 |--------------|:------------:|:----------:|:-------------------:|------|
 |[r2d2_W_N16.scale-0.3-1.npy](results/r2d2_W_N16.scale-0.3-1.npy) | `W` only | full | 0.699 | no annotation whatsoever |
 |[r2d2_WAF_N16.size-256-1024.npy](results/r2d2_WAF_N16.size-256-1024.npy) | `W`+`A`+`F` | 1024 px | 0.686 | as in NeurIPS paper |
-|[r2d2_WAF_N16.scale-0.3-1.npy](results/r2d2_WAF_N16.scale-0.3-1.npy) | `W`+`A`+`F` | full | 0.718 | +3% from resolution |
-|[r2d2_WASF_N16.size-256-1024.npy](results/r2d2_WASF_N16.size-256-1024.npy) | `W`+`A`+`S`+`F` | 1024 px | 0.721 |  |
+|[r2d2_WAF_N16.scale-0.3-1.npy](results/r2d2_WAF_N16.scale-0.3-1.npy) | `W`+`A`+`F` | full | 0.718 | +3.2% just from resolution |
+|[r2d2_WASF_N16.size-256-1024.npy](results/r2d2_WASF_N16.size-256-1024.npy) | `W`+`A`+`S`+`F` | 1024 px | 0.721 | with style transfer |
 
 
 Training the model
