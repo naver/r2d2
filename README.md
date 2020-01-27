@@ -88,6 +88,19 @@ You should normally get the following `MMA` plot:
 ![image](https://user-images.githubusercontent.com/56719813/67966238-d3cc6500-fc03-11e9-969b-5f086da26e34.png). 
 
 
+**New**: we have uploaded in the `results/` folder some pre-computed plots that you can visualize using the aforementioned script from `d2-net` if you place them in the `d2-net/hpatches_sequences/cache` folder.
+ - `r2d2_*_N16.size-256-1024.npy`: keypoints were extracted using a limited image resolution (i.e. with `python extract.py --min-size 256 --max-size 1024 ...`)
+ - `r2d2_*_N16.scale-0.3-1.npy`: keypoints were extracted using a full image resolution (i.e. with `python extract.py --min-size 0 --max-size 9999 --min-scale 0.3 --max-scale 1.0`).
+
+Here is a summary of the results:
+|  result file | training set | resolution | MMA@3 on<br>HPatches| note |
+|--------------|:------------:|:----------:|:-------------------:|------|
+|`r2d2_W_N16.scale-0.3-1.npy` | `W` only | full | 0.699 | no annotation whatsoever |
+|`r2d2_WAF_N16.size-256-1024.npy` | `W`+`A`+`F` | 1024 px | 0.686 | as in NeurIPS paper |
+|`r2d2_WAF_N16.scale-0.3-1.npy` | `W`+`A`+`F` | full | 0.718 | +3% from resolution |
+|`r2d2_WASF_N16.size-256-1024.npy` | `W`+`A`+`S`+`F` | 1024 px | 0.721 |  |
+
+
 Training the model
 ------------------
 We provide all the code and data to retrain the model as described in the paper.
