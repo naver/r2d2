@@ -88,7 +88,7 @@ You should normally get the following `MMA` plot:
 ![image](https://user-images.githubusercontent.com/56719813/67966238-d3cc6500-fc03-11e9-969b-5f086da26e34.png). 
 
 
-**New**: we have uploaded in the `results/` folder some pre-computed plots that you can visualize using the aforementioned script from `d2-net` if you place them in the `d2-net/hpatches_sequences/cache` folder.
+**New**: we have uploaded in the `results/` folder some pre-computed plots that you can visualize using the aforementioned ipython notebook from `d2-net` (you need to place them in the `d2-net/hpatches_sequences/cache/` folder).
  - `r2d2_*_N16.size-256-1024.npy`: keypoints were extracted using a limited image resolution (i.e. with `python extract.py --min-size 256 --max-size 1024 ...`)
  - `r2d2_*_N16.scale-0.3-1.npy`: keypoints were extracted using a full image resolution (i.e. with `python extract.py --min-size 0 --max-size 9999 --min-scale 0.3 --max-scale 1.0`).
 
