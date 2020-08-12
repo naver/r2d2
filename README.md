@@ -59,12 +59,29 @@ The keypoint file is in the `npz` numpy format and contains 3 fields:
  - `descriptors` (`N x 128`): l2-normalized descriptors.
  - `scores` (`N`): keypoint scores (the higher the better). 
  
-*Note*: You can modify the extraction parameters (scale factor, scale range...). Run `pyton extract.py --help` for more information. 
+*Note*: You can modify the extraction parameters (scale factor, scale range...). Run `python extract.py --help` for more information. 
 By default, they corespond to what is used in the paper, i.e., a scale factor equal to `2^0.25` (`--scale-f 1.189207`) and image size in the range `[256, 1024]` (`--min-size 256 --max-size 1024`). 
 
 *Note2*: You can significantly improve the `MMA@3` score (by ~4 pts) if you can afford more computations. To do so, you just need to increase the upper-limit on the scale range by replacing `--min-size 256 --max-size 1024` with `--min-size 0 --max-size 9999 --min-scale 0.3 --max-scale 1.0`.
 
+Feature extraction with Kapture datasets
+------------------
+Kapture is a pivot file format, based on text and binary files, used to describe SfM (Structure From Motion) and more generally sensor-acquired data
 
+It is available at https://github.com/naver/kapture.
+It contains conversion tools for popular formats and several popular datasets are directly available in this format.
+
+It can be installed with
+```bash
+pip install kapture
+```
+
+Once installed, you can extract keypoints for your kapture dataset with:
+```bash
+python extract_kapture.py --model models/r2d2_WASF_N16.pt --kapture-root pathto/yourkapturedataset --top-k 5000
+```
+
+Run `python extract_kapture.py --help` for more information on the extraction parameters. 
 
 Evaluation on HPatches
 ----------------------
