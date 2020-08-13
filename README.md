@@ -64,17 +64,26 @@ By default, they corespond to what is used in the paper, i.e., a scale factor eq
 
 *Note2*: You can significantly improve the `MMA@3` score (by ~4 pts) if you can afford more computations. To do so, you just need to increase the upper-limit on the scale range by replacing `--min-size 256 --max-size 1024` with `--min-size 0 --max-size 9999 --min-scale 0.3 --max-scale 1.0`.
 
-Feature extraction with Kapture datasets
+Feature extraction with kapture datasets
 ------------------
-Kapture is a pivot file format, based on text and binary files, used to describe SfM (Structure From Motion) and more generally sensor-acquired data
+Kapture is a pivot file format, based on text and binary files, used to describe SFM (Structure From Motion) and more generally sensor-acquired data.
 
 It is available at https://github.com/naver/kapture.
-It contains conversion tools for popular formats and several popular datasets are directly available in this format.
+It contains conversion tools for popular formats and several popular datasets are directly available in kapture.
 
-It can be installed with
+It can be installed with:
 ```bash
 pip install kapture
 ```
+
+Datasets can be downloaded with:
+```bash
+kapture_download_dataset.py update
+kapture_download_dataset.py list
+# e.g.: install mapping and query of Extended-CMU-Seasons_slice22
+kapture_download_dataset.py install "Extended-CMU-Seasons_slice22_*"
+```
+If you want to convert your own dataset into kapture, please find some examples [here](https://github.com/naver/kapture/blob/master/doc/datasets.adoc).
 
 Once installed, you can extract keypoints for your kapture dataset with:
 ```bash
