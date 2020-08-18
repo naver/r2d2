@@ -64,10 +64,6 @@ def extract_kapture_keypoints(args):
     for image_name in image_list:
         img_path = get_image_fullpath(args.kapture_root, image_name)
         
-        if img_path.endswith('.txt'):
-            args.images = open(img_path).read().splitlines() + args.images
-            continue
-        
         print(f"\nExtracting features for {img_path}")
         img = Image.open(img_path).convert('RGB')
         W, H = img.size
