@@ -128,6 +128,10 @@ Here is a summary of the results:
 |[r2d2_WASF_N16.size-256-1024.npy](results/r2d2_WASF_N16.size-256-1024.npy) | `W`+`A`+`S`+`F` | 1024 px | 0.721 | with style transfer |
 |[r2d2_WASF_N16.scale-0.3-1.npy](results/r2d2_WASF_N16.scale-0.3-1.npy) | `W`+`A`+`S`+`F` | full | 0.758 | +3.7% just from resolution |
 
+Evaluation on visuallocalization.net
+----------------------
+In our paper, we report visual localization results on the Aachen Day-Night dataset (nighttime images) available at visuallocalization.net. We used the provided local feature evaluation pipeline provided here: https://github.com/tsattler/visuallocalizationbenchmark/tree/master/local_feature_evaluation
+In the meantime, the ground truth poses of the Aachen nighttime images (which are used for the local feature evaluation) have been improved and changed on the website, thus, the original results reported in the paper cannot be reproduced.
 
 Training the model
 ------------------
