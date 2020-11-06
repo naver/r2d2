@@ -131,7 +131,7 @@ Here is a summary of the results:
 Evaluation on visuallocalization.net
 ----------------------
 In our paper, we report visual localization results on the Aachen Day-Night dataset (nighttime images) available at visuallocalization.net. We used the provided local feature evaluation pipeline provided here: https://github.com/tsattler/visuallocalizationbenchmark/tree/master/local_feature_evaluation
-In the meantime, the ground truth poses of the Aachen nighttime images (which are used for the local feature evaluation) have been improved and changed on the website, thus, the original results reported in the paper cannot be reproduced.
+In the meantime, the ground truth poses as well as the error thresholds of the Aachen nighttime images (which are used for the local feature evaluation) have been improved and changed on the website, thus, the original results reported in the paper cannot be reproduced.
 
 Training the model
 ------------------
