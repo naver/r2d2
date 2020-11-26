@@ -27,7 +27,7 @@ def extract_kapture_keypoints(args):
     Extract r2d2 keypoints and descritors to the kapture format directly 
     """
     print('extract_kapture_keypoints...')
-    kdata = kapture_from_dir(args.kapture_root, matches_pairsfile_path=None, 
+    kdata = kapture_from_dir(args.kapture_root, matches_pairs_file_path=None, 
     skip_list= [kapture.GlobalFeatures,
                 kapture.Matches,
                 kapture.Points3d,
