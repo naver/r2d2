@@ -51,6 +51,7 @@ Here is a table that summarizes the performance of each model:
 |`r2d2_WAF_N16.pt`    | 0.5M                    | 5K                     | 0.686              |
 |`r2d2_WASF_N16.pt`   | 0.5M                    | 5K                     | 0.721              |
 |`r2d2_WASF_N8_big.pt`| 1.0M                    | 10K                    | 0.692              |
+|`faster2d2_WASF_N8_big.pt`| 1.0M                    | 5K                    | 0.650              |
 <!--|`r2d2_WASF_N8_big.pt`| 1.0M                    | 5K                     | 0.704              |-->
 
 
