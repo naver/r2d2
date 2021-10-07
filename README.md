@@ -11,6 +11,13 @@ This repository contains the implementation of the following [paper](https://eur
 }
 ```
 
+Fast-R2D2
+-----------------
+
+This repository also contains the code needed to train and extract Fast-R2D2 keypoints. 
+Fast-R2D2 is a revised version of R2D2 that is significantly faster, uses less memory yet achieves the same order of precision as the original network.
+
+
 License
 -------
 
@@ -26,13 +33,16 @@ conda install python tqdm pillow numpy matplotlib scipy
 conda install pytorch torchvision cudatoolkit=10.1 -c pytorch
 ```
 
+
 Pretrained models
 -----------------
-For your convenience, we provide three pre-trained models in the `models/` folder:
+For your convenience, we provide five pre-trained models in the `models/` folder:
  - `r2d2_WAF_N16.pt`: this is the model used in most experiments of the paper (on HPatches `MMA@3=0.686`). It was trained with Web images (`W`), Aachen day-time images (`A`) and Aachen optical flow pairs (`F`)
  - `r2d2_WASF_N16.pt`: this is the model used in the visual localization experiments (on HPatches `MMA@3=0.721`). It was trained with Web images (`W`), Aachen day-time images (`A`), Aachen day-night synthetic pairs (`S`), and Aachen optical flow pairs (`F`).
  - `r2d2_WASF_N8.pt`: Same than previous model, but trained with `N=8` instead of `N=16` in the repeatability loss. In other words, it outputs a higher density of keypoints. This can be interesting for certain applications like visual localization, but it implies a drop in MMA since keypoints gets slighlty less reliable.
-
+ - `faster2d2_WASF_N16.pt`: The Fast-R2D2 equivalent of r2d2_WASF_N16.pt
+ - `faster2d2_WASF_N8_big.pt`: The Fast-R2D2 equivalent of r2d2_WASF_N8.pt
+  
 For more details about the training data, see the dedicated section below.
 Here is a table that summarizes the performance of each model:
 
@@ -174,5 +184,10 @@ python train.py --save-path /path/to/model.pt
 ```
 On a recent GPU, it takes 30 min per epoch, so ~12h for 25 epochs. 
 You should get a model that scores `0.71 +/- 0.01` in `MMA@3` on HPatches (this standard-deviation is similar to what is reported in Table 1 of the paper). 
+
+If you want to retrain fast-r2d2 architectures, run:
+```bash
+python train.py --save-path /path/to/fast-model.pt --net 'Fast_Quad_L2Net_ConfCFS()'
+```
 
 Note that you can fully configure the training (i.e. select the data sources, change the batch size, learning rate, number of epochs etc.). One easy way to improve the model is to train for more epochs, e.g. `--epochs 50`. For more details about all parameters, run `python train.py --help`.

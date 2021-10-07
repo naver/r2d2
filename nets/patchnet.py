@@ -53,7 +53,8 @@ class PatchNet (BaseNet):
     def _make_bn(self, outd):
         return nn.BatchNorm2d(outd, affine=self.bn_affine)
 
-    def _add_conv(self, outd, k=3, stride=1, dilation=1, bn=True, relu=True):
+    def _add_conv(self, outd, k=3, stride=1, dilation=1, bn=True, relu=True, k_pool = 1, pool_type='max'):
+        # as in the original implementation, dilation is applied at the end of layer, so it will have impact only from next layer
         d = self.dilation * dilation
         if self.dilated: 
             conv_params = dict(padding=((k-1)*d)//2, dilation=d, stride=1)
@@ -64,6 +65,14 @@ class PatchNet (BaseNet):
         if bn and self.bn: self.ops.append( self._make_bn(outd) )
         if relu: self.ops.append( nn.ReLU(inplace=True) )
         self.curchan = outd
+        
+        if k_pool > 1:
+            if pool_type == 'avg':
+                self.ops.append(torch.nn.AvgPool2d(kernel_size=k_pool))
+            elif pool_type == 'max':
+                self.ops.append(torch.nn.MaxPool2d(kernel_size=k_pool))
+            else:
+                print(f"Error, unknown pooling type {pool_type}...")
     
     def forward_one(self, x):
         assert self.ops, "You need to add convolutions first"
@@ -129,6 +138,49 @@ class Quad_L2Net_ConfCFS (Quad_L2Net):
         return self.normalize(x, ureliability, urepeatability)
 
 
+class Fast_Quad_L2Net (PatchNet):
+    """ Faster version of Quad l2 net, replacing one dilated conv with one pooling to diminish image resolution thus increase inference time
+    Dilation  factors and pooling:
+        1,1,1, pool2, 1,1, 2,2, 4, 8, upsample2
+    """
+    def __init__(self, dim=128, mchan=4, relu22=False, downsample_factor=2, **kw ):
 
-
-
+        PatchNet.__init__(self, **kw)
+        self._add_conv(  8*mchan)
+        self._add_conv(  8*mchan)
+        self._add_conv( 16*mchan, k_pool = downsample_factor) # added avg pooling to decrease img resolution
+        self._add_conv( 16*mchan)
+        self._add_conv( 32*mchan, stride=2)
+        self._add_conv( 32*mchan)
+        
+        # replace last 8x8 convolution with 3 2x2 convolutions
+        self._add_conv( 32*mchan, k=2, stride=2, relu=relu22)
+        self._add_conv( 32*mchan, k=2, stride=2, relu=relu22)
+        self._add_conv(dim, k=2, stride=2, bn=False, relu=False)
+        
+        # Go back to initial image resolution with upsampling
+        self.ops.append(torch.nn.Upsample(scale_factor=downsample_factor, mode='bilinear', align_corners=False))
+        
+        self.out_dim = dim
+        
+        
+class Fast_Quad_L2Net_ConfCFS (Fast_Quad_L2Net):
+    """ Fast r2d2 architecture
+    """
+    def __init__(self, **kw ):
+        Fast_Quad_L2Net.__init__(self, **kw)
+        # reliability classifier
+        self.clf = nn.Conv2d(self.out_dim, 2, kernel_size=1)
+        
+        # repeatability classifier: for some reasons it's a softplus, not a softmax!
+        # Why? I guess it's a mistake that was left unnoticed in the code for a long time...
+        self.sal = nn.Conv2d(self.out_dim, 1, kernel_size=1) 
+        
+    def forward_one(self, x):
+        assert self.ops, "You need to add convolutions first"
+        for op in self.ops:
+            x = op(x)
+        # compute the confidence maps
+        ureliability = self.clf(x**2)
+        urepeatability = self.sal(x**2)
+        return self.normalize(x, ureliability, urepeatability)
