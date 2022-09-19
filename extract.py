@@ -60,6 +60,7 @@ def extract_multiscale( net, img, detector, scale_f=2**0.25,
     
     assert max_scale <= 1
     s = 1.0 # current scale factor
+    min_size = min(min_size, max(H, W))
     
     X,Y,S,C,Q,D = [],[],[],[],[],[]
     while  s+0.001 >= max(min_scale, min_size / max(H,W)):
