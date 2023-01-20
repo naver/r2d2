@@ -1,7 +1,7 @@
 # Copyright 2019-present NAVER Corp.
 # CC BY-NC-SA 3.0
 # Available only for non-commercial use
-
+import time
 import os, pdb
 import torch
 import torch.optim as optim
@@ -70,6 +70,9 @@ class MyTrainer(trainer.Trainer):
 
 
 if __name__ == '__main__':
+
+    torch.cuda.empty_cache()
+
     import argparse
     parser = argparse.ArgumentParser("Train R2D2")
 
@@ -86,7 +89,7 @@ if __name__ == '__main__':
     parser.add_argument("--N", type=int, default=16, help="patch size for repeatability")
 
     parser.add_argument("--epochs", type=int, default=25, help='number of training epochs')
-    parser.add_argument("--batch-size", "--bs", type=int, default=8, help="batch size")
+    parser.add_argument("--batch-size", "--bs", type=int, default=4, help="batch size")
     parser.add_argument("--learning-rate", "--lr", type=str, default=1e-4)
     parser.add_argument("--weight-decay", "--wd", type=float, default=5e-4)
     
@@ -98,6 +101,9 @@ if __name__ == '__main__':
     iscuda = common.torch_set_gpu(args.gpu)
     common.mkdir_for(args.save_path)
 
+    start_time = time.time()
+
+    ## TO DO: Insert SVD Here
     # Create data loader
     from datasets import *
     db = [data_sources[key] for key in args.train_data]
@@ -132,6 +138,8 @@ if __name__ == '__main__':
         print(f"\n>> Starting epoch {epoch}...")
         train()
 
+    end_time= time.time()
+    print("Current time in seconds since epoch =", end_time - start_time)
     print(f"\n>> Saving model to {args.save_path}")
     torch.save({'net': args.net, 'state_dict': net.state_dict()}, args.save_path)
 
