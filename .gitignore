@@ -161,3 +161,6 @@ models/
 
 # D2-Net
 d2-net/
+
+# results
+results/
