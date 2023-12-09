@@ -1,3 +1,4 @@
+import os
 import time
 import cv2
 import torch
@@ -27,6 +28,13 @@ np.random.seed(SEED)
 '''
 
 def compute_svd(data_dir, N, tau, device):
+    '''
+    Input: 
+        data_dir: directory of the image
+        N: size of the ROI
+        tau: relaxation of singular values
+        device: CPU or GPU
+    '''
     ## Load Image
     img= cv2.imread(data_dir, 0)
     img=img.astype(float)
@@ -65,27 +73,61 @@ def main():
     start = time.time()
     torch.manual_seed(0)
     ## To do: Use pytorch SVD on GPU
-    data_dir = '/home/pfvaldez/Development/r2d2/data/aachen/images_upright/db/2.jpg'
-    N= 10
-    # tau= 5
-    tau= 80
+    ## SVDFace Hyperparameters
+    # N= 10
+    # tau= 80
 
-    ## CUDA for pytorch
-    use_cuda= torch.cuda.is_available()
-    device= torch.device("cuda:0" if use_cuda else "cpu")
+    ## SVD Face paper settings
+    N= 3
+    tau= 5
+    
+    data_dir= './data/oxbuild_images-v1/'
+    for filename in os.listdir(data_dir):
+        # filename= data_dir.split('/')[-1]
+        imagename= filename.split('.')[0]
+        print(imagename)
+        dir_filename= data_dir+'{}' .format(filename)
+        print(dir_filename)
 
-    svd_img_scaled= compute_svd(data_dir, N, tau, device)
+        ## Compute SVD Transform
+        ## CUDA for pytorch
+        use_cuda= torch.cuda.is_available()
+        device= torch.device("cuda:0" if use_cuda else "cpu")
 
-    # Filename
-    filename1 = './results/SVDface_tau{}.jpg' .format(tau)
-    # Using cv2.imwrite() method Saving the image
-    cv2.imwrite(filename1, svd_img_scaled)
+        svd_img_scaled= compute_svd(dir_filename, N, tau, device)
 
-    # cv2.imshow('SVDface_tau{}' .format(tau),svd_img_scaled)
-    # ## Add a waitkey
-    # cv2.waitKey(0)
-    # ## Destroy/close all windows
-    # cv2.destroyAllWindows()
+        # Writing the SVDFace image
+        ## Bug: Replace filename with imagename
+        filename1 = './results/oxbuild_images-v1_svd_n3t5/{}_SVDtau{}.jpg' .format(imagename, tau)
+        cv2.imwrite(filename1, svd_img_scaled)
+        print('Image saved: {}' .format(filename1))
+
+
+    # # # How to get filename from 'dat_dir'?
+    # # filename= data_dir.split('/')[-1]
+    # # filename= filename.split('.')[0]
+    # # print(filename)
+
+    # N= 10
+    # # tau= 5
+    # tau= 80
+
+    # ## CUDA for pytorch
+    # use_cuda= torch.cuda.is_available()
+    # device= torch.device("cuda:0" if use_cuda else "cpu")
+
+    # svd_img_scaled= compute_svd(data_dir, N, tau, device)
+
+    # # Filename
+    # filename1 = './results/{}_SVDtau{}.jpg' .format(filename, tau)
+    # # Using cv2.imwrite() method Saving the image
+    # cv2.imwrite(filename1, svd_img_scaled)
+
+    # # cv2.imshow('SVDface_tau{}' .format(tau),svd_img_scaled)
+    # # ## Add a waitkey
+    # # cv2.waitKey(0)
+    # # ## Destroy/close all windows
+    # # cv2.destroyAllWindows()
 
     end = time.time()
     print('Time elapsed:\t',end - start)
