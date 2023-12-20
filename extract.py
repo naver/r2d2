@@ -2,7 +2,7 @@
 # CC BY-NC-SA 3.0
 # Available only for non-commercial use
 
-
+import time
 import os, pdb
 from PIL import Image
 import numpy as np
@@ -163,7 +163,7 @@ if __name__ == '__main__':
     parser.add_argument("--model", type=str, required=True, help='model path')
     
     parser.add_argument("--images", type=str, required=True, nargs='+', help='images / list')
-    parser.add_argument("--tag", type=str, default='r2d2', help='output file tag')
+    parser.add_argument("--tag", type=str, default='i_r2d2', help='output file tag') # Changed tag to `i_r2d2` to track expriments
     
     parser.add_argument("--top-k", type=int, default=5000, help='number of keypoints')
 
@@ -179,5 +179,9 @@ if __name__ == '__main__':
     parser.add_argument("--gpu", type=int, nargs='+', default=[0], help='use -1 for CPU')
     args = parser.parse_args()
 
+    start_time= time.time()
     extract_keypoints(args)
+    end_time= time.time()
+    print("Finished extract, time in seconds =", end_time - start_time)
+
 

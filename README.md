@@ -192,3 +192,5 @@ python train.py --save-path /path/to/fast-model.pt --net 'Fast_Quad_L2Net_ConfCF
 ```
 
 Note that you can fully configure the training (i.e. select the data sources, change the batch size, learning rate, number of epochs etc.). One easy way to improve the model is to train for more epochs, e.g. `--epochs 50`. For more details about all parameters, run `python train.py --help`.
+
+
